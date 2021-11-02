@@ -1,1 +1,1 @@
-# computer-specs-viewer
+# Documentation for computer-specs-viewer
