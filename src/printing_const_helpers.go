@@ -1,0 +1,51 @@
+package src
+
+import (
+	"fmt"
+	"math"
+	"strings"
+)
+
+const StartBlock = "================================"
+const EndBlock = StartBlock
+const InfoDelim = "--------------------------------"
+
+func PrintStartBlock() {
+	fmt.Println(StartBlock)
+}
+
+func PrintEndBlock() {
+	fmt.Println(EndBlock)
+}
+
+func PrintSectionTitle(sectionName string) {
+	fmt.Printf("\n\n%v Section:\n\n", sectionName)
+}
+
+func PrintInfoDelim() {
+	fmt.Printf("\n%v\n\n", InfoDelim)
+}
+
+func GetPercentString(percentFloat float64) string {
+	percent := percentFloat * 100
+
+	return fmt.Sprintf("%.2f%%", percent)
+}
+
+func GetSpaceString(spaceBytes uint64, unit string) string {
+	spaceUnitExponent := map[string]int{
+		"B":  0,
+		"KB": 3,
+		"MB": 6,
+		"GB": 9,
+	}
+
+	unitExp, found := spaceUnitExponent[strings.ToUpper(unit)]
+
+	if !found {
+		return fmt.Sprintf("%v B", spaceBytes)
+	}
+
+	spaceAmtInUnit := float64(spaceBytes) / math.Pow(10, float64(unitExp))
+	return fmt.Sprintf("%.2f %v", spaceAmtInUnit, unit)
+}

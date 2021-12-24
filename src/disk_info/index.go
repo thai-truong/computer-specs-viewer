@@ -1,4 +1,4 @@
-package disk_info
+package diskinfo
 
 import (
 	"computer-specs-viewer/src"
@@ -65,6 +65,10 @@ func getFreeUsedPercents(total uint64, free uint64, used uint64) (freePercent fl
 	freeF := float64(free)
 	usedF := float64(used)
 
+	if totalF == 0 {
+		return 0, 0
+	}
+
 	freePercent = freeF / totalF
 	usedPercent = usedF / totalF
 
@@ -104,14 +108,14 @@ func printSingleDiskPartitionInfo(dpi DiskPartitionInfo) {
 	fmt.Printf("Mountpoint: %v\n", dpi.Mountpoint)
 	fmt.Printf("File system type: %v\n", dpi.Fstype)
 	fmt.Printf("Disk operations: %v\n", dpi.Opts)
-	fmt.Printf("Total disk space: %v\n", dpi.TotalSpace)
-	fmt.Printf("Free disk space: %v\n", dpi.FreeSpace)
-	fmt.Printf("Free disk space percentage: %v\n", freePercent)
-	fmt.Printf("Used disk space: %v\n", dpi.UsedSpace)
-	fmt.Printf("Used disk space percentage: %v\n", usedPercent)
+	fmt.Printf("Total disk space: %v\n", src.GetSpaceString(dpi.TotalSpace, "GB"))
+	fmt.Printf("Free disk space: %v\n", src.GetSpaceString(dpi.FreeSpace, "GB"))
+	fmt.Printf("Free disk space percentage: %v\n", src.GetPercentString(freePercent))
+	fmt.Printf("Used disk space: %v\n", src.GetSpaceString(dpi.UsedSpace, "GB"))
+	fmt.Printf("Used disk space percentage: %v\n", src.GetPercentString(usedPercent))
 	fmt.Printf("Total disk inodes: %v\n", dpi.TotalInodes)
 	fmt.Printf("Free disk inodes: %v\n", dpi.FreeInodes)
-	fmt.Printf("Free disk inodes percentage: %v\n", freeInodesPercent)
+	fmt.Printf("Free disk inodes percentage: %v\n", src.GetPercentString(freeInodesPercent))
 	fmt.Printf("Used disk inodes: %v\n", dpi.UsedInodes)
-	fmt.Printf("Used disk inodes percentage: %v\n", usedInodesPercent)
+	fmt.Printf("Used disk inodes percentage: %v\n", src.GetPercentString(usedInodesPercent))
 }

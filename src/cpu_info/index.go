@@ -1,4 +1,4 @@
-package cpu_info
+package cpuinfo
 
 import (
 	"fmt"
@@ -85,7 +85,7 @@ func PrintCpusInfo() {
 }
 
 func printSingleCpuInfo(cpu CpuInformation) {
-	fmt.Printf("** CPU number %v **\n", cpu.OrderNumber)
+	fmt.Printf("CPU number: %v\n", cpu.OrderNumber)
 	fmt.Printf("Model name: %v\n", cpu.ModelName)
 	fmt.Printf("Vendor: %v\n", cpu.VendorId)
 	fmt.Printf("Family: %v\n", cpu.Family)
