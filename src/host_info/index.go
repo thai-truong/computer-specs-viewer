@@ -15,7 +15,6 @@ type HostInformation struct {
 	NumProcs    uint64
 	OS          string
 	Platform    string
-	PlatformVer string
 	PlatformFam string
 	KernelVer   string
 	KernelArch  string
@@ -38,8 +37,7 @@ func extractHostInformation(origHostInfo host.InfoStat) HostInformation {
 		BootTime:    time.Unix(int64(origHostInfo.BootTime), 0),
 		NumProcs:    origHostInfo.Procs,
 		OS:          origHostInfo.OS,
-		Platform:    origHostInfo.Platform,
-		PlatformVer: origHostInfo.PlatformVersion,
+		Platform:    fmt.Sprintf("%v Version %v", origHostInfo.Platform, origHostInfo.PlatformVersion),
 		PlatformFam: origHostInfo.PlatformFamily,
 		KernelVer:   origHostInfo.KernelVersion,
 		KernelArch:  origHostInfo.KernelArch,
@@ -64,7 +62,6 @@ func printHostInfoDetails(hostInfo HostInformation) {
 	fmt.Printf("Number of processes: %v\n", hostInfo.NumProcs)
 	fmt.Printf("OS: %v\n", hostInfo.OS)
 	fmt.Printf("Platform: %v\n", hostInfo.Platform)
-	fmt.Printf("Platform version: %v\n", hostInfo.PlatformVer)
 	fmt.Printf("Platform family: %v\n", hostInfo.PlatformFam)
 	fmt.Printf("Kernel Version: %v\n", hostInfo.KernelVer)
 	fmt.Printf("Kernel Architecture: %v\n", hostInfo.KernelArch)
