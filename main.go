@@ -5,6 +5,8 @@ import (
 	diskinfo "computer-specs-viewer/src/disk_info"
 	hostinfo "computer-specs-viewer/src/host_info"
 	meminfo "computer-specs-viewer/src/mem_info"
+	"fmt"
+	"net"
 )
 
 func main() {
@@ -14,7 +16,7 @@ func main() {
 	//swapMem, _ := mem.SwapMemory()
 	//swapDevices, _ := mem.SwapDevices()
 	//virtualMem, _ := mem.VirtualMemory()
-	//nwInterfaceStats, _ := net.Interfaces()
+	nwInterfaceStats, _ := net.Interfaces()
 
 	//fmt.Println(diskPartitions)
 	//fmt.Println(cpuInfo)
@@ -26,5 +28,5 @@ func main() {
 	//fmt.Println(swapMem)
 	//fmt.Println(virtualMem)
 	//fmt.Println(swapDevices)
-	//fmt.Println(nwInterfaceStats)
+	fmt.Println(nwInterfaceStats)
 }
