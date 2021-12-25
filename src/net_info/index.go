@@ -1,6 +1,11 @@
 package netinfo
 
-import "github.com/shirou/gopsutil/net"
+import (
+	"computer-specs-viewer/src"
+	"fmt"
+
+	"github.com/shirou/gopsutil/net"
+)
 
 type NetworkInterfaceInformation struct {
 	OrderNumber  int
@@ -100,4 +105,43 @@ func extractSingleNetworkInterfaceIO(ioInfo net.IOCountersStat) NetworkInterface
 		SendDropCount: ioInfo.Dropout,
 		RecvDropCount: ioInfo.Dropin,
 	}
+}
+
+func PrintNetworkInterfacesInfo() {
+	interfaces := GetNetworkInterfacesInfo()
+
+	src.PrintSectionTitle("Network Interfaces")
+	src.PrintStartBlock()
+
+	for i := 0; i < len(interfaces); i++ {
+		printSingleNetworkInterfaceInfo(interfaces[i])
+
+		if i < len(interfaces)-1 {
+			src.PrintInfoDelim()
+		}
+	}
+
+	src.PrintEndBlock()
+}
+
+func printSingleNetworkInterfaceInfo(intf NetworkInterfaceInformation) {
+	src.PrintStrWithOrder("Network interface", intf.OrderNumber)
+	fmt.Printf("Name: %v\n", intf.Name)
+	fmt.Printf("Maximum transmission unit (MTU): %v\n", intf.MTU)
+	fmt.Printf("Hardware address: %v\n", intf.HardwareAddr)
+	fmt.Printf("Flags enabled: %v\n", src.GetStrListAsStr(intf.Flags))
+	fmt.Printf("Addresses belonging to this interface: %v\n", src.GetStrListAsStr(intf.Addresses))
+	fmt.Println("IO information:")
+	printNetworkInterfaceIO(intf.IOInfo)
+}
+
+func printNetworkInterfaceIO(io NetworkInterfaceIO) {
+	fmt.Printf("\tBytes sent: %v\n", io.BytesSent)
+	fmt.Printf("\tBytes received: %v\n", io.BytesRecv)
+	fmt.Printf("\tPackets sent: %v\n", io.PacketsSent)
+	fmt.Printf("\tPackets received: %v\n", io.PacketsRecv)
+	fmt.Printf("\tNumber of errors occurred while sending: %v\n", io.SendErrCount)
+	fmt.Printf("\tNumber of errors occurred while receiving: %v\n", io.RecvErrCount)
+	fmt.Printf("\tNumber of dropped outgoing packets: %v\n", io.SendDropCount)
+	fmt.Printf("\tNumber of dropped incoming packets: %v\n", io.RecvDropCount)
 }
