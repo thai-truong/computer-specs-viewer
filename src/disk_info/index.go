@@ -8,16 +8,20 @@ import (
 )
 
 type DiskPartitionInfo struct {
-	Name        string
-	Mountpoint  string
-	Fstype      string
-	Opts        string
-	TotalSpace  uint64
-	FreeSpace   uint64
-	UsedSpace   uint64
-	TotalInodes uint64
-	FreeInodes  uint64
-	UsedInodes  uint64
+	Name              string
+	Mountpoint        string
+	Fstype            string
+	Opts              string
+	TotalSpace        uint64
+	FreeSpace         uint64
+	UsedSpace         uint64
+	FreePercent       float64
+	UsedPercent       float64
+	TotalInodes       uint64
+	FreeInodes        uint64
+	UsedInodes        uint64
+	FreeInodesPercent float64
+	UsedInodesPercent float64
 }
 
 func createDiskPartitionInfo(diskPt disk.PartitionStat) DiskPartitionInfo {
@@ -42,6 +46,14 @@ func createDiskPartitionInfo(diskPt disk.PartitionStat) DiskPartitionInfo {
 	diskInfo.FreeInodes = diskUsage.InodesFree
 	diskInfo.UsedInodes = diskUsage.InodesUsed
 
+	freeSpacePerc, usedSpacePerc := src.GetFreeUsedPercents(diskUsage.Total, diskUsage.Free, diskUsage.Used)
+	freeInodesPerc, usedInodesPerc := src.GetFreeUsedPercents(diskUsage.InodesTotal, diskUsage.InodesFree, diskUsage.InodesUsed)
+
+	diskInfo.FreePercent = freeSpacePerc
+	diskInfo.UsedPercent = usedSpacePerc
+	diskInfo.FreeInodesPercent = freeInodesPerc
+	diskInfo.UsedInodesPercent = usedInodesPerc
+
 	return diskInfo
 }
 
@@ -58,21 +70,6 @@ func GetDiskPartitionsInfo(getAll bool) []DiskPartitionInfo {
 	}
 
 	return dpsInfo
-}
-
-func getFreeUsedPercents(total uint64, free uint64, used uint64) (freePercent float64, usedPercent float64) {
-	totalF := float64(total)
-	freeF := float64(free)
-	usedF := float64(used)
-
-	if totalF == 0 {
-		return 0, 0
-	}
-
-	freePercent = freeF / totalF
-	usedPercent = usedF / totalF
-
-	return freePercent, usedPercent
 }
 
 func PrintAllDiskPartitionsInfo() {
@@ -101,21 +98,18 @@ func printDiskPartitionsInfo(getAll bool) {
 }
 
 func printSingleDiskPartitionInfo(dpi DiskPartitionInfo) {
-	freePercent, usedPercent := getFreeUsedPercents(dpi.TotalSpace, dpi.FreeSpace, dpi.UsedSpace)
-	freeInodesPercent, usedInodesPercent := getFreeUsedPercents(dpi.TotalInodes, dpi.FreeInodes, dpi.UsedInodes)
-
 	fmt.Printf("Disk partition name: %v\n", dpi.Name)
 	fmt.Printf("Mountpoint: %v\n", dpi.Mountpoint)
 	fmt.Printf("File system type: %v\n", dpi.Fstype)
 	fmt.Printf("Disk operations: %v\n", dpi.Opts)
 	fmt.Printf("Total disk space: %v\n", src.GetSpaceString(dpi.TotalSpace, "GB"))
 	fmt.Printf("Free disk space: %v\n", src.GetSpaceString(dpi.FreeSpace, "GB"))
-	fmt.Printf("Free disk space percentage: %v\n", src.GetPercentString(freePercent))
+	fmt.Printf("Free disk space percentage: %v\n", src.GetPercentString(dpi.FreePercent))
 	fmt.Printf("Used disk space: %v\n", src.GetSpaceString(dpi.UsedSpace, "GB"))
-	fmt.Printf("Used disk space percentage: %v\n", src.GetPercentString(usedPercent))
+	fmt.Printf("Used disk space percentage: %v\n", src.GetPercentString(dpi.UsedPercent))
 	fmt.Printf("Total disk inodes: %v\n", dpi.TotalInodes)
 	fmt.Printf("Free disk inodes: %v\n", dpi.FreeInodes)
-	fmt.Printf("Free disk inodes percentage: %v\n", src.GetPercentString(freeInodesPercent))
+	fmt.Printf("Free disk inodes percentage: %v\n", src.GetPercentString(dpi.FreeInodesPercent))
 	fmt.Printf("Used disk inodes: %v\n", dpi.UsedInodes)
-	fmt.Printf("Used disk inodes percentage: %v\n", src.GetPercentString(usedInodesPercent))
+	fmt.Printf("Used disk inodes percentage: %v\n", src.GetPercentString(dpi.UsedInodesPercent))
 }

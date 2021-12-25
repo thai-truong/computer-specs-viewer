@@ -9,6 +9,7 @@ import (
 const StartBlock = "================================"
 const EndBlock = StartBlock
 const InfoDelim = "--------------------------------"
+const ItemDelim = "++++++++++++++++++++++++++++++++"
 
 func PrintStartBlock() {
 	fmt.Println(StartBlock)
@@ -24,6 +25,14 @@ func PrintSectionTitle(sectionName string) {
 
 func PrintInfoDelim() {
 	fmt.Printf("\n%v\n\n", InfoDelim)
+}
+
+func PrintItemDelim() {
+	fmt.Printf("%v\n", ItemDelim)
+}
+
+func PrintStrWithOrder(str string, order int) {
+	fmt.Printf("%v #%v\n", str, order)
 }
 
 func GetPercentString(percentFloat float64) string {

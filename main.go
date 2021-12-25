@@ -4,6 +4,7 @@ import (
 	cpuinfo "computer-specs-viewer/src/cpu_info"
 	diskinfo "computer-specs-viewer/src/disk_info"
 	hostinfo "computer-specs-viewer/src/host_info"
+	meminfo "computer-specs-viewer/src/mem_info"
 )
 
 func main() {
@@ -20,6 +21,7 @@ func main() {
 	cpuinfo.PrintCpusInfo()
 	diskinfo.PrintAllDiskPartitionsInfo()
 	hostinfo.PrintHostInfo()
+	meminfo.PrintAllMemInfo()
 	//fmt.Println(hostInfo)
 	//fmt.Println(swapMem)
 	//fmt.Println(virtualMem)
