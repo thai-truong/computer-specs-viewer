@@ -35,6 +35,20 @@ func PrintStrWithOrder(str string, order int) {
 	fmt.Printf("%v #%v\n", str, order)
 }
 
+func GetStrListAsStr(strList []string) string {
+	var contentStr string
+
+	for i := 0; i < len(strList); i++ {
+		contentStr += strList[i]
+
+		if i < len(strList)-1 {
+			contentStr += ", "
+		}
+	}
+
+	return fmt.Sprintf("[%v]", contentStr)
+}
+
 func GetPercentString(percentFloat float64) string {
 	percent := percentFloat * 100
 
