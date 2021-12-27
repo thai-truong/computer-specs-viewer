@@ -1,7 +1,7 @@
 package gpuinfo
 
 import (
-	"computer-specs-viewer/src"
+	"computer-specs-viewer/utils"
 	"context"
 	"fmt"
 	"strings"
@@ -9,8 +9,6 @@ import (
 
 	"github.com/yusufpapurcu/wmi"
 )
-
-var Timeout = 3 * time.Second
 
 type Win32_VideoController struct {
 	Name                        string
@@ -57,27 +55,6 @@ type GpuInformation struct {
 	PresentOnSystem      bool
 }
 
-// WMIQueryWithContext - wraps wmi.Query with a timed-out context to avoid hanging
-func WMIQueryWithContext(ctx context.Context, query string, dst interface{}, connectServerArgs ...interface{}) error {
-	if _, ok := ctx.Deadline(); !ok {
-		ctxTimeout, cancel := context.WithTimeout(ctx, Timeout)
-		defer cancel()
-		ctx = ctxTimeout
-	}
-
-	errChan := make(chan error, 1)
-	go func() {
-		errChan <- wmi.Query(query, dst, connectServerArgs...)
-	}()
-
-	select {
-	case <-ctx.Done():
-		return ctx.Err()
-	case err := <-errChan:
-		return err
-	}
-}
-
 func GetGPUsInformation() []GpuInformation {
 	gpus, err := GetGPUsInformationWithErr()
 
@@ -95,7 +72,7 @@ func GetGPUsInformationWithErr() ([]GpuInformation, error) {
 	ctx := context.Background()
 	query := wmi.CreateQuery(&dst, "")
 
-	if err := WMIQueryWithContext(ctx, query, &dst); err != nil {
+	if err := utils.WMIQueryWithContext(ctx, query, &dst); err != nil {
 		return gpus, err
 	}
 
@@ -124,7 +101,7 @@ func GetGPUsInformationWithErr() ([]GpuInformation, error) {
 		whereClause := fmt.Sprintf("WHERE DeviceID = '%s'", escapedDeviceID)
 		pnpQuery := wmi.CreateQuery(&pnpDst, whereClause)
 
-		pnpErr := WMIQueryWithContext(ctx, pnpQuery, &pnpDst)
+		pnpErr := utils.WMIQueryWithContext(ctx, pnpQuery, &pnpDst)
 
 		if pnpErr != nil {
 			fmt.Printf("Error while looking for corresponding PNPEntity of current GPU: %v", pnpErr)
@@ -159,22 +136,22 @@ func getRefreshRateRangeStr(minRate uint32, maxRate uint32) string {
 func PrintGpusInfo() {
 	gpus := GetGPUsInformation()
 
-	src.PrintSectionTitle("GPU Devices")
-	src.PrintStartBlock()
+	utils.PrintSectionTitle("GPU Devices")
+	utils.PrintStartBlock()
 
 	for i := 0; i < len(gpus); i++ {
 		printSingleGPUInfo(gpus[i])
 
 		if i < len(gpus)-1 {
-			src.PrintInfoDelim()
+			utils.PrintInfoDelim()
 		}
 	}
 
-	src.PrintEndBlock()
+	utils.PrintEndBlock()
 }
 
 func printSingleGPUInfo(gpu GpuInformation) {
-	src.PrintStrWithOrder("GPU device", gpu.Index)
+	utils.PrintStrWithOrder("GPU device", gpu.Index)
 	fmt.Printf("Name: %v\n", gpu.Name)
 	fmt.Printf("Manufacturer: %v\n", gpu.Manufacturer)
 	fmt.Printf("Version: %v\n", gpu.Version)
@@ -189,6 +166,6 @@ func printSingleGPUInfo(gpu GpuInformation) {
 	fmt.Printf("Device status: %v\n", gpu.Status)
 	fmt.Printf("Device availability: %v\n", gpu.Availability)
 	fmt.Printf("Present on system: %v\n", gpu.PresentOnSystem)
-	fmt.Printf("Memory (RAM) size: %v\n", src.GetSpaceString(uint64(gpu.MemorySize), "MB"))
+	fmt.Printf("Memory (RAM) size: %v\n", utils.GetSpaceString(uint64(gpu.MemorySize), "MB"))
 	fmt.Printf("Monochrome: %v\n", gpu.IsMonochrome)
 }

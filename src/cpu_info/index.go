@@ -1,11 +1,10 @@
 package cpuinfo
 
 import (
+	"computer-specs-viewer/utils"
 	"fmt"
 
 	"github.com/shirou/gopsutil/v3/cpu"
-
-	"computer-specs-viewer/src"
 )
 
 type CpuInformation struct {
@@ -70,18 +69,18 @@ func extractSingleCpuInfo(cpuInfo cpu.InfoStat) CpuInformation {
 func PrintCpusInfo() {
 	cpus := GetCpuInfo()
 
-	src.PrintSectionTitle("CPU")
-	src.PrintStartBlock()
+	utils.PrintSectionTitle("CPU")
+	utils.PrintStartBlock()
 
 	for i := 0; i < len(cpus); i++ {
 		printSingleCpuInfo(cpus[i])
 
 		if i < len(cpus)-1 {
-			src.PrintInfoDelim()
+			utils.PrintInfoDelim()
 		}
 	}
 
-	src.PrintEndBlock()
+	utils.PrintEndBlock()
 }
 
 func printSingleCpuInfo(cpu CpuInformation) {
