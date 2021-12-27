@@ -27,9 +27,9 @@ type Win32_VideoController struct {
 	Availability                uint16
 	AdapterRAM                  uint32 // Currently WMI gives the wrong value for this https://docs.microsoft.com/en-us/troubleshoot/windows-client/deployment/msinfo32-report-wrong-display-adapter-ram
 	AdapterCompatibility        string
+	AdapterDACType              string
 	Monochrome                  bool
 	PNPDeviceID                 string
-	VideoArchitecture           uint16
 }
 
 type Win32_PnPEntity struct {
@@ -51,10 +51,10 @@ type GpuInformation struct {
 	Availability         string
 	MemorySize           uint32
 	AdapterCompatibility string
+	AdapterDACType       string
 	IsMonochrome         bool
 	Manufacturer         string
 	PresentOnSystem      bool
-	VideoArchitecture    string
 }
 
 // WMIQueryWithContext - wraps wmi.Query with a timed-out context to avoid hanging
@@ -115,7 +115,7 @@ func GetGPUsInformationWithErr() ([]GpuInformation, error) {
 			MemorySize:           gpu.AdapterRAM,
 			AdapterCompatibility: gpu.AdapterCompatibility,
 			IsMonochrome:         gpu.Monochrome,
-			VideoArchitecture:    VideoArchitectureMapping[gpu.VideoArchitecture],
+			AdapterDACType:       gpu.AdapterDACType,
 		}
 
 		var pnpDst []Win32_PnPEntity
@@ -179,6 +179,8 @@ func printSingleGPUInfo(gpu GpuInformation) {
 	fmt.Printf("Manufacturer: %v\n", gpu.Manufacturer)
 	fmt.Printf("Version: %v\n", gpu.Version)
 	fmt.Printf("Last modified: %v\n", gpu.LastModified)
+	fmt.Printf("Adapter compatibility: %v compatible\n", gpu.AdapterCompatibility)
+	fmt.Printf("Adapter DAC type: %v\n", gpu.AdapterDACType)
 	fmt.Printf("Resolution: %v\n", gpu.Resolution)
 	fmt.Printf("Number of colors available: %v\n", gpu.NumColors)
 	fmt.Printf("Current refresh rate: %v\n", gpu.CurrRefreshRate)
@@ -188,7 +190,5 @@ func printSingleGPUInfo(gpu GpuInformation) {
 	fmt.Printf("Device availability: %v\n", gpu.Availability)
 	fmt.Printf("Present on system: %v\n", gpu.PresentOnSystem)
 	fmt.Printf("Memory (RAM) size: %v\n", src.GetSpaceString(uint64(gpu.MemorySize), "MB"))
-	fmt.Printf("Adapter compatibility: %v compatible\n", gpu.AdapterCompatibility)
-	fmt.Printf("Is monochrome: %v\n", gpu.IsMonochrome)
-	fmt.Printf("Video architecture: %v\n", gpu.VideoArchitecture)
+	fmt.Printf("Monochrome: %v\n", gpu.IsMonochrome)
 }
