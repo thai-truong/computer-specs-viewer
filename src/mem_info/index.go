@@ -1,7 +1,7 @@
 package meminfo
 
 import (
-	"computer-specs-viewer/src"
+	"computer-specs-viewer/utils"
 	"fmt"
 
 	"github.com/shirou/gopsutil/mem"
@@ -69,7 +69,7 @@ func GetSwapMemInfo() MemInformation {
 }
 
 func extractSwapMemInfo(swapMem mem.SwapMemoryStat) MemInformation {
-	freeP, usedP := src.GetFreeUsedPercents(swapMem.Total, swapMem.Free, swapMem.Used)
+	freeP, usedP := utils.GetFreeUsedPercents(swapMem.Total, swapMem.Free, swapMem.Used)
 
 	return MemInformation{
 		TotalSpace:  swapMem.Total,
@@ -91,7 +91,7 @@ func GetVirtualMemInfo() MemInformation {
 }
 
 func extractVirtualMemInfo(vMem mem.VirtualMemoryStat) MemInformation {
-	freeP, usedP := src.GetFreeUsedPercents(vMem.Total, vMem.Available, vMem.Used)
+	freeP, usedP := utils.GetFreeUsedPercents(vMem.Total, vMem.Available, vMem.Used)
 
 	return MemInformation{
 		TotalSpace:  vMem.Total,
@@ -105,41 +105,41 @@ func extractVirtualMemInfo(vMem mem.VirtualMemoryStat) MemInformation {
 func PrintAllMemInfo() {
 	allMemInfo := GetAllMemInfo()
 
-	src.PrintSectionTitle("Memory (Swap, Virtual)")
-	src.PrintStartBlock()
+	utils.PrintSectionTitle("Memory (Swap, Virtual)")
+	utils.PrintStartBlock()
 
 	printMemInfo(allMemInfo.SwapMem, "Swap")
-	src.PrintInfoDelim()
+	utils.PrintInfoDelim()
 
 	printSwapDevicesInfo(allMemInfo.SwapDevices)
-	src.PrintInfoDelim()
+	utils.PrintInfoDelim()
 
 	printMemInfo(allMemInfo.VirtualMem, "Virtual")
-	src.PrintEndBlock()
+	utils.PrintEndBlock()
 }
 
 func printSwapDevicesInfo(devices []SwapDeviceInfo) {
 	for i := 0; i < len(devices); i++ {
-		src.PrintStrWithOrder("Swap device", i)
+		utils.PrintStrWithOrder("Swap device", i)
 		printSingleDeviceInfo(devices[i])
 
 		if i < len(devices)-1 {
-			src.PrintItemDelim()
+			utils.PrintItemDelim()
 		}
 	}
 }
 
 func printSingleDeviceInfo(device SwapDeviceInfo) {
 	fmt.Printf("Name: %v\n", device.Name)
-	fmt.Printf("Free space: %v\n", src.GetSpaceString(device.Free, "GB"))
-	fmt.Printf("Used space: %v\n", src.GetSpaceString(device.Used, "GB"))
+	fmt.Printf("Free space: %v\n", utils.GetSpaceString(device.Free, "GB"))
+	fmt.Printf("Used space: %v\n", utils.GetSpaceString(device.Used, "GB"))
 }
 
 func printMemInfo(memInfo MemInformation, memType string) {
 	fmt.Printf("%v memory:\n", memType)
-	fmt.Printf("Total space: %v\n", src.GetSpaceString(memInfo.TotalSpace, "GB"))
-	fmt.Printf("Free space: %v\n", src.GetSpaceString(memInfo.FreeSpace, "GB"))
-	fmt.Printf("Used space: %v\n", src.GetSpaceString(memInfo.UsedSpace, "GB"))
-	fmt.Printf("Free space percent: %v\n", src.GetPercentString(memInfo.FreePercent))
-	fmt.Printf("Used space percent: %v\n", src.GetPercentString(memInfo.UsedPercent))
+	fmt.Printf("Total space: %v\n", utils.GetSpaceString(memInfo.TotalSpace, "GB"))
+	fmt.Printf("Free space: %v\n", utils.GetSpaceString(memInfo.FreeSpace, "GB"))
+	fmt.Printf("Used space: %v\n", utils.GetSpaceString(memInfo.UsedSpace, "GB"))
+	fmt.Printf("Free space percent: %v\n", utils.GetPercentString(memInfo.FreePercent))
+	fmt.Printf("Used space percent: %v\n", utils.GetPercentString(memInfo.UsedPercent))
 }

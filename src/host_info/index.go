@@ -1,7 +1,7 @@
 package hostinfo
 
 import (
-	"computer-specs-viewer/src"
+	"computer-specs-viewer/utils"
 	"fmt"
 	"time"
 
@@ -47,12 +47,12 @@ func extractHostInformation(origHostInfo host.InfoStat) HostInformation {
 func PrintHostInfo() {
 	hostInfo := GetHostInfo()
 
-	src.PrintSectionTitle("Host")
-	src.PrintStartBlock()
+	utils.PrintSectionTitle("Host")
+	utils.PrintStartBlock()
 
 	printHostInfoDetails(hostInfo)
 
-	src.PrintEndBlock()
+	utils.PrintEndBlock()
 }
 
 func printHostInfoDetails(hostInfo HostInformation) {

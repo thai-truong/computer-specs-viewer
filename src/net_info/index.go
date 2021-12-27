@@ -1,7 +1,7 @@
 package netinfo
 
 import (
-	"computer-specs-viewer/src"
+	"computer-specs-viewer/utils"
 	"fmt"
 
 	"github.com/shirou/gopsutil/net"
@@ -110,27 +110,27 @@ func extractSingleNetworkInterfaceIO(ioInfo net.IOCountersStat) NetworkInterface
 func PrintNetworkInterfacesInfo() {
 	interfaces := GetNetworkInterfacesInfo()
 
-	src.PrintSectionTitle("Network Interfaces")
-	src.PrintStartBlock()
+	utils.PrintSectionTitle("Network Interfaces")
+	utils.PrintStartBlock()
 
 	for i := 0; i < len(interfaces); i++ {
 		printSingleNetworkInterfaceInfo(interfaces[i])
 
 		if i < len(interfaces)-1 {
-			src.PrintInfoDelim()
+			utils.PrintInfoDelim()
 		}
 	}
 
-	src.PrintEndBlock()
+	utils.PrintEndBlock()
 }
 
 func printSingleNetworkInterfaceInfo(intf NetworkInterfaceInformation) {
-	src.PrintStrWithOrder("Network interface", intf.OrderNumber)
+	utils.PrintStrWithOrder("Network interface", intf.OrderNumber)
 	fmt.Printf("Name: %v\n", intf.Name)
 	fmt.Printf("Maximum transmission unit (MTU): %v\n", intf.MTU)
 	fmt.Printf("Hardware address: %v\n", intf.HardwareAddr)
-	fmt.Printf("Flags enabled: %v\n", src.GetStrListAsStr(intf.Flags))
-	fmt.Printf("Addresses belonging to this interface: %v\n", src.GetStrListAsStr(intf.Addresses))
+	fmt.Printf("Flags enabled: %v\n", utils.GetStrListAsStr(intf.Flags))
+	fmt.Printf("Addresses belonging to this interface: %v\n", utils.GetStrListAsStr(intf.Addresses))
 	fmt.Println("IO information:")
 	printNetworkInterfaceIO(intf.IOInfo)
 }

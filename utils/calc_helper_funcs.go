@@ -1,4 +1,4 @@
-package src
+package utils
 
 func GetFreeUsedPercents(total uint64, free uint64, used uint64) (freePercent float64, usedPercent float64) {
 	totalF := float64(total)
