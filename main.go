@@ -1,15 +1,56 @@
 package main
 
 import (
+	"bufio"
 	cpuinfo "computer-specs-viewer/src/cpu_info"
 	diskinfo "computer-specs-viewer/src/disk_info"
 	gpuinfo "computer-specs-viewer/src/gpu_info"
 	hostinfo "computer-specs-viewer/src/host_info"
 	meminfo "computer-specs-viewer/src/mem_info"
 	netinfo "computer-specs-viewer/src/net_info"
+	"fmt"
+	"os"
 )
 
+var printChoiceMapping = map[string](func()){
+	"cpu":    cpuinfo.PrintCpusInfo,
+	"disk":   diskinfo.PrintAllDiskPartitionsInfo,
+	"gpu":    gpuinfo.PrintGpusInfo,
+	"host":   hostinfo.PrintHostInfo,
+	"memory": meminfo.PrintAllMemInfo,
+	"net":    netinfo.PrintNetworkInterfacesInfo,
+	"all":    printAllInfo,
+}
+
 func main() {
+	scanner := bufio.NewScanner(os.Stdin)
+
+	for {
+		fmt.Println("\n- Type one of these choices to view their information: [cpu, disk, gpu, host, memory, net]")
+		fmt.Println("- To view all types of information, type \"all\"")
+		fmt.Println("- To quit, type \"q\"!")
+
+		fmt.Print("\nEnter information listed above that you want to see: ")
+		scanner.Scan()
+
+		choice := scanner.Text()
+
+		if choice == "q" {
+			break
+		}
+
+		printFuncToCall, foundChoice := printChoiceMapping[choice]
+
+		if !foundChoice {
+			fmt.Println(fmt.Errorf("\nError: Your input (%v) does not match any of the provided choices for input", choice))
+			continue
+		}
+
+		printFuncToCall()
+	}
+}
+
+func printAllInfo() {
 	cpuinfo.PrintCpusInfo()
 	diskinfo.PrintAllDiskPartitionsInfo()
 	hostinfo.PrintHostInfo()
