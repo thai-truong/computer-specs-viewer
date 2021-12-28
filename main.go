@@ -10,6 +10,7 @@ import (
 	netinfo "computer-specs-viewer/src/net_info"
 	"fmt"
 	"os"
+	"strings"
 )
 
 var printChoiceMapping = map[string](func()){
@@ -26,23 +27,20 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for {
-		fmt.Println("\n- Type one of these choices to view their information: [cpu, disk, gpu, host, memory, net]")
-		fmt.Println("- To view all types of information, type \"all\"")
-		fmt.Println("- To quit, type \"q\"!")
+		printStartingInstructions()
 
 		fmt.Print("\nEnter information listed above that you want to see: ")
 		scanner.Scan()
-
 		choice := scanner.Text()
 
-		if choice == "q" {
+		if foundQuitInput(choice) {
 			break
 		}
 
 		printFuncToCall, foundChoice := printChoiceMapping[choice]
 
 		if !foundChoice {
-			fmt.Println(fmt.Errorf("\nError: Your input (%v) does not match any of the provided choices for input", choice))
+			fmt.Println(fmt.Errorf("\n\nError: Your input (%v) does not match any of the provided choices for input", choice))
 			continue
 		}
 
@@ -57,4 +55,16 @@ func printAllInfo() {
 	meminfo.PrintAllMemInfo()
 	netinfo.PrintNetworkInterfacesInfo()
 	gpuinfo.PrintGpusInfo()
+}
+
+func printStartingInstructions() {
+	fmt.Println("\n- Type one of these choices to view their information: [cpu, disk, gpu, host, memory, net]")
+	fmt.Println("- To view all types of information, type \"all\"")
+	fmt.Println("- To quit, type \"q\" or \"quit\"!")
+}
+
+func foundQuitInput(input string) bool {
+	lowercaseInput := strings.ToLower(input)
+
+	return lowercaseInput == "q" || lowercaseInput == "quit"
 }
