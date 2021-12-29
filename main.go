@@ -7,6 +7,7 @@ import (
 	gpuinfo "computer-specs-viewer/src/gpu_info"
 	hostinfo "computer-specs-viewer/src/host_info"
 	meminfo "computer-specs-viewer/src/mem_info"
+	motherboardinfo "computer-specs-viewer/src/motherboard_info"
 	netinfo "computer-specs-viewer/src/net_info"
 	"fmt"
 	"os"
@@ -14,13 +15,14 @@ import (
 )
 
 var printChoiceMapping = map[string](func()){
-	"cpu":    cpuinfo.PrintCpusInfo,
-	"disk":   diskinfo.PrintAllDiskPartitionsInfo,
-	"gpu":    gpuinfo.PrintGpusInfo,
-	"host":   hostinfo.PrintHostInfo,
-	"memory": meminfo.PrintAllMemInfo,
-	"net":    netinfo.PrintNetworkInterfacesInfo,
-	"all":    printAllInfo,
+	"cpu":         cpuinfo.PrintCpusInfo,
+	"disk":        diskinfo.PrintAllDiskPartitionsInfo,
+	"gpu":         gpuinfo.PrintGpusInfo,
+	"host":        hostinfo.PrintHostInfo,
+	"memory":      meminfo.PrintAllMemInfo,
+	"net":         netinfo.PrintNetworkInterfacesInfo,
+	"motherboard": motherboardinfo.PrintMotherboardsInfo,
+	"all":         printAllInfo,
 }
 
 func main() {
@@ -55,10 +57,11 @@ func printAllInfo() {
 	meminfo.PrintAllMemInfo()
 	netinfo.PrintNetworkInterfacesInfo()
 	gpuinfo.PrintGpusInfo()
+	motherboardinfo.PrintMotherboardsInfo()
 }
 
 func printStartingInstructions() {
-	fmt.Println("\n- Type one of these choices to view their information: [cpu, disk, gpu, host, memory, net]")
+	fmt.Println("\n- Type one of these choices to view their information: [cpu, disk, gpu, host, memory, net, motherboard]")
 	fmt.Println("- To view all types of information, type \"all\"")
 	fmt.Println("- To quit, type \"q\" or \"quit\"!")
 }
