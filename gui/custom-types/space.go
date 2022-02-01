@@ -21,34 +21,64 @@ const (
 	TB           = "TB"
 )
 
-var unitToExponent = map[SpaceUnit]int{
-	B:  0,
-	KB: 3,
-	MB: 6,
-	GB: 9,
-	TB: 12,
-}
+var (
+	unitToExponent = map[SpaceUnit]int{
+		B:  0,
+		KB: 3,
+		MB: 6,
+		GB: 9,
+		TB: 12,
+	}
+
+	defaultUnit = MB
+)
 
 func (s Space) String() string {
-	return fmt.Sprintf("%v %s", s.ConvAmount, s.ConvUnit)
+	return fmt.Sprintf("%.2f %s", s.ConvAmount, s.ConvUnit)
 }
 
-func ConvertUnitFromByte(curr Space, newUnit SpaceUnit) Space {
+func (s Space) ConvertToUnitFromByte(newUnit SpaceUnit) Space {
 	exp, found := unitToExponent[newUnit]
 
 	if !found {
 		return Space{
-			ByteAmount: curr.ByteAmount,
-			ConvAmount: float64(curr.ByteAmount),
+			ByteAmount: s.ByteAmount,
+			ConvAmount: float64(s.ByteAmount),
 			ConvUnit:   B,
 		}
 	}
 
-	newUnitSpace := float64(curr.ByteAmount) / math.Pow(10, float64(exp))
+	newUnitSpace := float64(s.ByteAmount) / math.Pow(10, float64(exp))
 
 	return Space{
-		ByteAmount: curr.ByteAmount,
+		ByteAmount: s.ByteAmount,
 		ConvAmount: newUnitSpace,
 		ConvUnit:   newUnit,
 	}
+}
+
+func (s Space) ToKb() Space {
+	return s.ConvertToUnitFromByte(KB)
+}
+
+func (s Space) ToMb() Space {
+	return s.ConvertToUnitFromByte(MB)
+}
+
+func (s Space) ToGb() Space {
+	return s.ConvertToUnitFromByte(GB)
+}
+
+func (s Space) ToTb() Space {
+	return s.ConvertToUnitFromByte(TB)
+}
+
+func NumToCustomSpaceType(spaceAmt uint64, optionalUnit ...string) Space {
+	newSpace := Space{
+		ByteAmount: spaceAmt,
+		ConvAmount: float64(spaceAmt),
+		ConvUnit:   B,
+	}
+
+	return newSpace.ConvertToUnitFromByte(MB)
 }

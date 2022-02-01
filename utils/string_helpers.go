@@ -20,3 +20,7 @@ func SpaceOutFieldNames(field string) string {
 
 	return spacedOutField.String()
 }
+
+func GetStrWithOrder(str string, order string) string {
+	return fmt.Sprintf("%s %s\n", str, order)
+}

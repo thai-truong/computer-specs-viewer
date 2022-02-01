@@ -29,44 +29,28 @@ func getCpuInfoStrings(cpu CpuInformationGui) []string {
 	return res
 }
 
-func convertInfoStringsToLabels(infoStrs []string) []fyne.CanvasObject {
-	labels := []fyne.CanvasObject{}
-
-	for _, infoStr := range infoStrs {
-		labels = append(labels, widget.NewLabel(infoStr))
-	}
-
-	return labels
-}
-
 func getInfoLabels(cpuGui CpuInformationGui) []fyne.CanvasObject {
-	return convertInfoStringsToLabels(getCpuInfoStrings(cpuGui))
+	return utils.ConvertStringsToLabels(getCpuInfoStrings(cpuGui))
 }
 
 func CreateInfoScreen(_ fyne.Window) fyne.CanvasObject {
-	cpuList := cpuinfo.GetCpuInfo()
-	allCpuInfo := []fyne.CanvasObject{}
+	cpuSlice := cpuinfo.GetCpuInfo()
+	cpuAccordion := widget.NewAccordion()
 
-	for i, cpu := range cpuList {
+	for i, cpu := range cpuSlice {
 		cpuGui := CpuInformationGui(cpu)
 
-		orderLabel := []fyne.CanvasObject{widget.NewLabel(fmt.Sprintf("CPU #%v", (i + 1)))}
-		infoLabels := append(orderLabel, getInfoLabels(cpuGui)...)
-		addSeparator(i, len(cpuList), infoLabels)
-
-		if i < len(cpuList)-1 {
-			infoLabels = append(infoLabels, widget.NewSeparator())
-		}
-
-		cpuContent := container.NewVBox(infoLabels...)
-		allCpuInfo = append(allCpuInfo, cpuContent)
+		cpuOrder := fmt.Sprint(i + 1)
+		accordionItem := CreateAccordionItem(cpuOrder, cpuGui)
+		cpuAccordion.Append(accordionItem)
 	}
 
-	return container.NewCenter(allCpuInfo...)
+	return utils.NewScrollVBox(cpuAccordion)
 }
 
-func addSeparator(idx int, infoListLen int, infoLabels []fyne.CanvasObject) {
-	if idx < infoListLen {
-		infoLabels = append(infoLabels, widget.NewSeparator())
-	}
+func CreateAccordionItem(order string, cpu CpuInformationGui) *widget.AccordionItem {
+	title := utils.GetStrWithOrder("CPU", order)
+	infoLabels := getInfoLabels(cpu)
+
+	return widget.NewAccordionItem(title, container.NewVBox(infoLabels...))
 }

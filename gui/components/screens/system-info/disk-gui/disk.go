@@ -1,6 +1,16 @@
 package diskgui
 
-import custom_types "computer-specs-viewer/gui/custom-types"
+import (
+	custom_types "computer-specs-viewer/gui/custom-types"
+	diskinfo "computer-specs-viewer/src/disk_info"
+	"computer-specs-viewer/utils"
+	"fmt"
+	"reflect"
+
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/widget"
+)
 
 type DiskPartitionInfoGui struct {
 	Name              string
@@ -19,4 +29,64 @@ type DiskPartitionInfoGui struct {
 	UsedInodesPercent custom_types.Percent
 }
 
-func transformInput() {}
+func transformInput(disk diskinfo.DiskPartitionInfo) DiskPartitionInfoGui {
+	return DiskPartitionInfoGui{
+		Name:              disk.Name,
+		Mountpoint:        disk.Mountpoint,
+		Fstype:            disk.Fstype,
+		Opts:              disk.Opts,
+		TotalSpace:        custom_types.NumToCustomSpaceType(disk.TotalSpace).ToGb(),
+		FreeSpace:         custom_types.NumToCustomSpaceType(disk.FreeSpace).ToGb(),
+		UsedSpace:         custom_types.NumToCustomSpaceType(disk.UsedSpace).ToGb(),
+		FreePercent:       custom_types.CreatePercent(disk.FreePercent),
+		UsedPercent:       custom_types.CreatePercent(disk.UsedPercent),
+		TotalInodes:       disk.TotalInodes,
+		FreeInodes:        disk.FreeInodes,
+		UsedInodes:        disk.UsedInodes,
+		FreeInodesPercent: custom_types.CreatePercent(disk.FreeInodesPercent),
+		UsedInodesPercent: custom_types.CreatePercent(disk.UsedInodesPercent),
+	}
+}
+
+func getDiskInfoStrings(diskGui DiskPartitionInfoGui) []string {
+	res := []string{}
+	diskValues := reflect.ValueOf(diskGui)
+	diskType := diskValues.Type()
+
+	for i := 0; i < diskValues.NumField(); i++ {
+		infoFieldName := utils.SpaceOutFieldNames(diskType.Field(i).Name)
+		infoFieldValue := diskValues.Field(i).Interface()
+
+		infoStr := fmt.Sprintf("%s: %v\n", infoFieldName, infoFieldValue)
+		res = append(res, infoStr)
+	}
+
+	return res
+}
+
+func getInfoLabels(diskGui DiskPartitionInfoGui) []fyne.CanvasObject {
+	return utils.ConvertStringsToLabels(getDiskInfoStrings(diskGui))
+}
+
+func CreateInfoScreen(_ fyne.Window) fyne.CanvasObject {
+	diskSlice := diskinfo.GetDiskPartitionsInfo(true)
+	diskAccordion := widget.NewAccordion()
+
+	for _, disk := range diskSlice {
+		diskGui := transformInput(disk)
+		diskOrder := diskGui.Name[:len(diskGui.Name)-1]
+
+		accordionItem := CreateAccordionItem(diskOrder, diskGui)
+		diskAccordion.Append(accordionItem)
+	}
+
+	//return utils.NewScrollVBox(allDiskInfo...)
+	return utils.NewScrollVBox(diskAccordion)
+}
+
+func CreateAccordionItem(order string, disk DiskPartitionInfoGui) *widget.AccordionItem {
+	title := utils.GetStrWithOrder("Disk", order)
+	infoLabels := getInfoLabels(disk)
+
+	return widget.NewAccordionItem(title, container.NewVBox(infoLabels...))
+}
