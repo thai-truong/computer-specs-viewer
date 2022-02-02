@@ -7,15 +7,14 @@ import (
 	"reflect"
 
 	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 )
 
 type CpuInformationGui cpuinfo.CpuInformation
 
-func getCpuInfoStrings(cpu CpuInformationGui) []string {
+func getCpuInfoStrings(cpuGui CpuInformationGui) []string {
 	res := []string{}
-	cpuValues := reflect.ValueOf(cpu)
+	cpuValues := reflect.ValueOf(cpuGui)
 	cpuType := cpuValues.Type()
 
 	for i := 0; i < cpuValues.NumField(); i++ {
@@ -29,8 +28,8 @@ func getCpuInfoStrings(cpu CpuInformationGui) []string {
 	return res
 }
 
-func getInfoLabels(cpuGui CpuInformationGui) []fyne.CanvasObject {
-	return utils.ConvertStringsToLabels(getCpuInfoStrings(cpuGui))
+func getCpuInfoLabel(cpuGui CpuInformationGui) fyne.CanvasObject {
+	return utils.CreateStrSliceInfoLabel(getCpuInfoStrings(cpuGui))
 }
 
 func CreateInfoScreen(_ fyne.Window) fyne.CanvasObject {
@@ -39,18 +38,12 @@ func CreateInfoScreen(_ fyne.Window) fyne.CanvasObject {
 
 	for i, cpu := range cpuSlice {
 		cpuGui := CpuInformationGui(cpu)
-
 		cpuOrder := fmt.Sprint(i + 1)
-		accordionItem := CreateAccordionItem(cpuOrder, cpuGui)
+
+		cpuInfoLabel := getCpuInfoLabel(cpuGui)
+		accordionItem := utils.CreateAccordionItem("CPU", cpuOrder, []fyne.CanvasObject{cpuInfoLabel})
 		cpuAccordion.Append(accordionItem)
 	}
 
 	return utils.NewScrollVBox(cpuAccordion)
-}
-
-func CreateAccordionItem(order string, cpu CpuInformationGui) *widget.AccordionItem {
-	title := utils.GetStrWithOrder("CPU", order)
-	infoLabels := getInfoLabels(cpu)
-
-	return widget.NewAccordionItem(title, container.NewVBox(infoLabels...))
 }

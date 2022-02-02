@@ -8,7 +8,6 @@ import (
 	"reflect"
 
 	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -64,8 +63,8 @@ func getDiskInfoStrings(diskGui DiskPartitionInfoGui) []string {
 	return res
 }
 
-func getInfoLabels(diskGui DiskPartitionInfoGui) []fyne.CanvasObject {
-	return utils.ConvertStringsToLabels(getDiskInfoStrings(diskGui))
+func getDiskInfoLabel(diskGui DiskPartitionInfoGui) fyne.CanvasObject {
+	return utils.CreateStrSliceInfoLabel(getDiskInfoStrings(diskGui))
 }
 
 func CreateInfoScreen(_ fyne.Window) fyne.CanvasObject {
@@ -76,17 +75,10 @@ func CreateInfoScreen(_ fyne.Window) fyne.CanvasObject {
 		diskGui := transformInput(disk)
 		diskOrder := diskGui.Name[:len(diskGui.Name)-1]
 
-		accordionItem := CreateAccordionItem(diskOrder, diskGui)
+		diskInfoLabel := getDiskInfoLabel(diskGui)
+		accordionItem := utils.CreateAccordionItem("Disk", diskOrder, []fyne.CanvasObject{diskInfoLabel})
 		diskAccordion.Append(accordionItem)
 	}
 
-	//return utils.NewScrollVBox(allDiskInfo...)
 	return utils.NewScrollVBox(diskAccordion)
-}
-
-func CreateAccordionItem(order string, disk DiskPartitionInfoGui) *widget.AccordionItem {
-	title := utils.GetStrWithOrder("Disk", order)
-	infoLabels := getInfoLabels(disk)
-
-	return widget.NewAccordionItem(title, container.NewVBox(infoLabels...))
 }

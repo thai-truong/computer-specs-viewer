@@ -3,6 +3,8 @@ package data
 import (
 	cpugui "computer-specs-viewer/gui/components/screens/system-info/cpu-gui"
 	diskgui "computer-specs-viewer/gui/components/screens/system-info/disk-gui"
+	gpugui "computer-specs-viewer/gui/components/screens/system-info/gpu-gui"
+	hostgui "computer-specs-viewer/gui/components/screens/system-info/host-gui"
 	top_level_options "computer-specs-viewer/gui/components/screens/top-level-options"
 
 	"fyne.io/fyne/v2"
@@ -26,8 +28,8 @@ var (
 		"systemInfo":  {"System Information", "", top_level_options.SystemInformationScreen},
 		"cpu":         {"CPU", "This page contains information about this computer's CPU.", cpugui.CreateInfoScreen},
 		"disk":        {"Disk", "This page contains information about this computer's disk partitions.", diskgui.CreateInfoScreen},
-		"gpu":         {"GPU", "", nil},
-		"host":        {"Host", "", nil},
+		"gpu":         {"GPU", "This page contains information about this computer's GPU.", gpugui.CreateInfoScreen},
+		"host":        {"Host", "This page contains information about this computer's current host.", hostgui.CreateInfoScreen},
 		"mem":         {"Memory", "", nil},
 		"motherboard": {"Motherboard", "", nil},
 		"net":         {"Network", "", nil},
