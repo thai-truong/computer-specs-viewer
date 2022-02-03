@@ -54,7 +54,7 @@ func getHostInfoStrings(hostGui HostInformationGui) []string {
 }
 
 func getHostInfoLabel(hostGui HostInformationGui) fyne.CanvasObject {
-	return utils.CreateStrSliceInfoLabel(getHostInfoStrings(hostGui))
+	return utils.SliceToSingleFyneLabel(getHostInfoStrings(hostGui))
 }
 
 func CreateInfoScreen(_ fyne.Window) fyne.CanvasObject {

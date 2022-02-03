@@ -29,7 +29,7 @@ func getCpuInfoStrings(cpuGui CpuInformationGui) []string {
 }
 
 func getCpuInfoLabel(cpuGui CpuInformationGui) fyne.CanvasObject {
-	return utils.CreateStrSliceInfoLabel(getCpuInfoStrings(cpuGui))
+	return utils.SliceToSingleFyneLabel(getCpuInfoStrings(cpuGui))
 }
 
 func CreateInfoScreen(_ fyne.Window) fyne.CanvasObject {

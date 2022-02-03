@@ -5,6 +5,7 @@ import (
 	diskgui "computer-specs-viewer/gui/components/screens/system-info/disk-gui"
 	gpugui "computer-specs-viewer/gui/components/screens/system-info/gpu-gui"
 	hostgui "computer-specs-viewer/gui/components/screens/system-info/host-gui"
+	memgui "computer-specs-viewer/gui/components/screens/system-info/mem-gui"
 	top_level_options "computer-specs-viewer/gui/components/screens/top-level-options"
 
 	"fyne.io/fyne/v2"
@@ -30,7 +31,7 @@ var (
 		"disk":        {"Disk", "This page contains information about this computer's disk partitions.", diskgui.CreateInfoScreen},
 		"gpu":         {"GPU", "This page contains information about this computer's GPU.", gpugui.CreateInfoScreen},
 		"host":        {"Host", "This page contains information about this computer's current host.", hostgui.CreateInfoScreen},
-		"mem":         {"Memory", "", nil},
+		"mem":         {"Memory", "This page contains information about this computer's memory information.", memgui.CreateInfoScreen},
 		"motherboard": {"Motherboard", "", nil},
 		"net":         {"Network", "", nil},
 		"settings":    {"Settings", "", top_level_options.SettingsScreen},

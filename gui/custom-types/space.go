@@ -73,7 +73,7 @@ func (s Space) ToTb() Space {
 	return s.ConvertToUnitFromByte(TB)
 }
 
-func NumToCustomSpaceType(spaceAmt uint64, optionalUnit ...string) Space {
+func NumToCustomSpaceType(spaceAmt uint64) Space {
 	newSpace := Space{
 		ByteAmount: spaceAmt,
 		ConvAmount: float64(spaceAmt),

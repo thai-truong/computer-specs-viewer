@@ -18,7 +18,7 @@ func ConvertStringsToLabels(strs []string) []fyne.CanvasObject {
 	return labels
 }
 
-func CreateStrSliceInfoLabel(strs []string) fyne.CanvasObject {
+func SliceToSingleFyneLabel(strs []string) fyne.CanvasObject {
 	fyneLabelText := ""
 
 	for _, label := range strs {

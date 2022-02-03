@@ -69,7 +69,7 @@ func getGpuInfoStrings(gpuGui GpuInformationGui) []string {
 }
 
 func getGpuInfoLabel(gpuGui GpuInformationGui) fyne.CanvasObject {
-	return utils.CreateStrSliceInfoLabel(getGpuInfoStrings(gpuGui))
+	return utils.SliceToSingleFyneLabel(getGpuInfoStrings(gpuGui))
 }
 
 func CreateInfoScreen(_ fyne.Window) fyne.CanvasObject {

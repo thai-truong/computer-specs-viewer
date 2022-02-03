@@ -64,7 +64,7 @@ func getDiskInfoStrings(diskGui DiskPartitionInfoGui) []string {
 }
 
 func getDiskInfoLabel(diskGui DiskPartitionInfoGui) fyne.CanvasObject {
-	return utils.CreateStrSliceInfoLabel(getDiskInfoStrings(diskGui))
+	return utils.SliceToSingleFyneLabel(getDiskInfoStrings(diskGui))
 }
 
 func CreateInfoScreen(_ fyne.Window) fyne.CanvasObject {
