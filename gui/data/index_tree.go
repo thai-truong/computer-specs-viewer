@@ -6,6 +6,8 @@ import (
 	gpugui "computer-specs-viewer/gui/components/screens/system-info/gpu-gui"
 	hostgui "computer-specs-viewer/gui/components/screens/system-info/host-gui"
 	memgui "computer-specs-viewer/gui/components/screens/system-info/mem-gui"
+	motherboardgui "computer-specs-viewer/gui/components/screens/system-info/motherboard-gui"
+	netgui "computer-specs-viewer/gui/components/screens/system-info/net-gui"
 	top_level_options "computer-specs-viewer/gui/components/screens/top-level-options"
 
 	"fyne.io/fyne/v2"
@@ -32,8 +34,8 @@ var (
 		"gpu":         {"GPU", "This page contains information about this computer's GPU.", gpugui.CreateInfoScreen},
 		"host":        {"Host", "This page contains information about this computer's current host.", hostgui.CreateInfoScreen},
 		"mem":         {"Memory", "This page contains information about this computer's memory information.", memgui.CreateInfoScreen},
-		"motherboard": {"Motherboard", "", nil},
-		"net":         {"Network", "", nil},
+		"motherboard": {"Motherboard", "This page contains information about this computer's motherboards.", motherboardgui.CreateInfoScreen},
+		"net":         {"Network", "This page contains information about this computer's network interfaces.", netgui.CreateInfoScreen},
 		"settings":    {"Settings", "", top_level_options.SettingsScreen},
 		"themeMode":   {"Theme Mode", "", nil},
 	}

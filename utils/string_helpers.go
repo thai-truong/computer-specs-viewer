@@ -39,3 +39,14 @@ func IsAllCharsUpper(str string) bool {
 
 	return true
 }
+
+func StrListToPrettyStr(strs []string) string {
+	res := "[\n"
+
+	for _, str := range strs {
+		res += fmt.Sprintf("\t%s,\n", str)
+	}
+
+	res += "]"
+	return res
+}
