@@ -23,6 +23,14 @@ type HostInformationGui struct {
 	KernelArchitecture string
 }
 
+func GetTitle() string {
+	return "Host"
+}
+
+func GetDesc() string {
+	return "This page contains information about this computer's current host."
+}
+
 func transformInput(host hostinfo.HostInformation) HostInformationGui {
 	return HostInformationGui{
 		Name:               host.Name,

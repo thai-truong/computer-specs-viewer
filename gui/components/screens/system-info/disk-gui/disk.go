@@ -28,6 +28,14 @@ type DiskPartitionInfoGui struct {
 	UsedInodesPercent custom_types.Percent
 }
 
+func GetTitle() string {
+	return "Disk"
+}
+
+func GetDesc() string {
+	return "This page contains information about this computer's disk partitions."
+}
+
 func transformInput(disk diskinfo.DiskPartitionInfo) DiskPartitionInfoGui {
 	return DiskPartitionInfoGui{
 		Name:              disk.Name,

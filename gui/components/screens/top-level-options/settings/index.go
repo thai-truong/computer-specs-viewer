@@ -1,4 +1,4 @@
-package top_level_options
+package settings
 
 import (
 	"fyne.io/fyne/v2"

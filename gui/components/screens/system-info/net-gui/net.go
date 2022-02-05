@@ -35,6 +35,14 @@ type NetworkInterfaceIOGui struct {
 	RecvDropCount   uint64
 }
 
+func GetTitle() string {
+	return "Network"
+}
+
+func GetDesc() string {
+	return "This page contains information about this computer's network interfaces."
+}
+
 func transformNetworkIoInput(io netinfo.NetworkInterfaceIO) NetworkInterfaceIOGui {
 	return NetworkInterfaceIOGui{
 		BytesSent:       io.BytesSent,

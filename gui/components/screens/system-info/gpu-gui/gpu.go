@@ -31,6 +31,14 @@ type GpuInformationGui struct {
 	PresentOnSystem      bool
 }
 
+func GetTitle() string {
+	return "GPU"
+}
+
+func GetDesc() string {
+	return "This page contains information about this computer's GPU."
+}
+
 func transformInput(gpu gpuinfo.GpuInformation) GpuInformationGui {
 	return GpuInformationGui{
 		Name:                 gpu.Name,

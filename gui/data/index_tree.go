@@ -8,7 +8,9 @@ import (
 	memgui "computer-specs-viewer/gui/components/screens/system-info/mem-gui"
 	motherboardgui "computer-specs-viewer/gui/components/screens/system-info/motherboard-gui"
 	netgui "computer-specs-viewer/gui/components/screens/system-info/net-gui"
-	top_level_options "computer-specs-viewer/gui/components/screens/top-level-options"
+	"computer-specs-viewer/gui/components/screens/top-level-options/settings"
+	systeminfo "computer-specs-viewer/gui/components/screens/top-level-options/system-info"
+	"computer-specs-viewer/gui/components/screens/welcome"
 
 	"fyne.io/fyne/v2"
 )
@@ -27,16 +29,20 @@ var (
 	}
 
 	TitleToContentMapping = map[string]TreeNodeContent{
-		"welcome":     {"Welcome", "", nil},
-		"systemInfo":  {"System Information", "", top_level_options.SystemInformationScreen},
-		"cpu":         {"CPU", "This page contains information about this computer's CPU.", cpugui.CreateInfoScreen},
-		"disk":        {"Disk", "This page contains information about this computer's disk partitions.", diskgui.CreateInfoScreen},
-		"gpu":         {"GPU", "This page contains information about this computer's GPU.", gpugui.CreateInfoScreen},
-		"host":        {"Host", "This page contains information about this computer's current host.", hostgui.CreateInfoScreen},
-		"mem":         {"Memory", "This page contains information about this computer's memory information.", memgui.CreateInfoScreen},
-		"motherboard": {"Motherboard", "This page contains information about this computer's motherboards.", motherboardgui.CreateInfoScreen},
-		"net":         {"Network", "This page contains information about this computer's network interfaces.", netgui.CreateInfoScreen},
-		"settings":    {"Settings", "", top_level_options.SettingsScreen},
+		"welcome":     {welcome.GetTitle(), welcome.GetDesc(), welcome.CreateScreen},
+		"systemInfo":  {systeminfo.GetTitle(), systeminfo.GetDesc(), systeminfo.CreateScreen},
+		"cpu":         {cpugui.GetTitle(), cpugui.GetDesc(), cpugui.CreateInfoScreen},
+		"disk":        {diskgui.GetTitle(), diskgui.GetDesc(), diskgui.CreateInfoScreen},
+		"gpu":         {gpugui.GetTitle(), gpugui.GetDesc(), gpugui.CreateInfoScreen},
+		"host":        {hostgui.GetTitle(), hostgui.GetDesc(), hostgui.CreateInfoScreen},
+		"mem":         {memgui.GetTitle(), memgui.GetDesc(), memgui.CreateInfoScreen},
+		"motherboard": {motherboardgui.GetTitle(), motherboardgui.GetDesc(), motherboardgui.CreateInfoScreen},
+		"net":         {netgui.GetTitle(), netgui.GetDesc(), netgui.CreateInfoScreen},
+		"settings":    {"Settings", "", settings.SettingsScreen},
 		"themeMode":   {"Theme Mode", "", nil},
 	}
 )
+
+func GetWelcomeScreenData() TreeNodeContent {
+	return TitleToContentMapping["welcome"]
+}

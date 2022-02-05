@@ -9,27 +9,33 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-var (
-	splitOffset   = 0.3
-	titleInitText = "Title"
-	descInitText  = "Description"
-)
+var splitOffset = 0.3
+
+func getWelcomeScreenContent(w fyne.Window) (screenTitle *widget.Label, screenDesc *widget.Label, screenContent *fyne.Container) {
+	welcomeData := data.GetWelcomeScreenData()
+
+	screenTitle = widget.NewLabel(welcomeData.Title)
+	screenDesc = widget.NewLabel(welcomeData.Description)
+
+	screenContent = container.NewMax()
+	screenContent.Objects = []fyne.CanvasObject{welcomeData.DisplayContent(w)}
+
+	return screenTitle, screenDesc, screenContent
+}
 
 func CreateMainViewScreen(window fyne.Window) fyne.CanvasObject {
-	infoTitle := widget.NewLabel(titleInitText)
-	infoDescription := widget.NewLabel(descInitText)
-	infoContent := container.NewMax()
+	screenTitle, screenDesc, screenContent := getWelcomeScreenContent(window)
 
 	setSelectedInfo := func(info data.TreeNodeContent) {
-		infoTitle.SetText(info.Title)
-		infoDescription.SetText(info.Description)
+		screenTitle.SetText(info.Title)
+		screenDesc.SetText(info.Description)
 
-		infoContent.Objects = []fyne.CanvasObject{info.DisplayContent(window)}
-		infoContent.Refresh()
+		screenContent.Objects = []fyne.CanvasObject{info.DisplayContent(window)}
+		screenContent.Refresh()
 	}
 
 	navTree := index_tree.CreateIndexTree(setSelectedInfo)
-	mainScreen := container.NewBorder(container.NewVBox(infoTitle, widget.NewSeparator(), infoDescription, widget.NewSeparator()), nil, nil, nil, infoContent)
+	mainScreen := container.NewBorder(container.NewVBox(screenTitle, widget.NewSeparator(), screenDesc, widget.NewSeparator()), nil, nil, nil, screenContent)
 
 	splitScreens := container.NewHSplit(navTree, mainScreen)
 	splitScreens.Offset = splitOffset

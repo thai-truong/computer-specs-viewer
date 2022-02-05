@@ -12,6 +12,14 @@ import (
 
 type CpuInformationGui cpuinfo.CpuInformation
 
+func GetTitle() string {
+	return "CPU"
+}
+
+func GetDesc() string {
+	return "This page contains information about this computer's CPU."
+}
+
 func getCpuInfoStrings(cpuGui CpuInformationGui) []string {
 	res := []string{}
 	cpuValues := reflect.ValueOf(cpuGui)

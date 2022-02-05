@@ -12,6 +12,14 @@ import (
 
 type MotherboardInformationGui motherboardinfo.MotherboardInformation
 
+func GetTitle() string {
+	return "Motherboard"
+}
+
+func GetDesc() string {
+	return "This page contains information about this computer's motherboards."
+}
+
 func getMotherboardInfoStrings(mBoardGui MotherboardInformationGui) []string {
 	res := []string{}
 	cpuValues := reflect.ValueOf(mBoardGui)
