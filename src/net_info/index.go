@@ -129,8 +129,8 @@ func printSingleNetworkInterfaceInfo(intf NetworkInterfaceInformation) {
 	fmt.Printf("Name: %v\n", intf.Name)
 	fmt.Printf("Maximum transmission unit (MTU): %v\n", intf.MTU)
 	fmt.Printf("Hardware address: %v\n", intf.HardwareAddr)
-	fmt.Printf("Flags enabled: %v\n", utils.GetStrListAsStr(intf.Flags))
-	fmt.Printf("Addresses belonging to this interface: %v\n", utils.GetStrListAsStr(intf.Addresses))
+	fmt.Printf("Flags enabled: %v\n", utils.StrListToStr(intf.Flags))
+	fmt.Printf("Addresses belonging to this interface: %v\n", utils.StrListToStr(intf.Addresses))
 	fmt.Println("IO information:")
 	printNetworkInterfaceIO(intf.IOInfo)
 }

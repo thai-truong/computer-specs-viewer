@@ -14,3 +14,7 @@ func GetFreeUsedPercents(total uint64, free uint64, used uint64) (freePercent fl
 
 	return freePercent, usedPercent
 }
+
+func SecondsAmtToHours(amt uint64) float64 {
+	return float64(amt) / (60 * 60)
+}

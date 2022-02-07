@@ -35,7 +35,7 @@ func PrintStrWithOrder(str string, order int) {
 	fmt.Printf("%v #%v\n", str, order)
 }
 
-func GetStrListAsStr(strList []string) string {
+func StrListToStr(strList []string) string {
 	var contentStr string
 
 	for i := 0; i < len(strList); i++ {
