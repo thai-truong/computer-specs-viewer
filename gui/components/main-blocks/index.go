@@ -11,8 +11,8 @@ import (
 
 var splitOffset = 0.3
 
-func getWelcomeScreenContent(w fyne.Window) (screenTitle *widget.Label, screenDesc *widget.Label, screenContent *fyne.Container) {
-	welcomeData := data.GetWelcomeScreenData()
+func getStartScreenContent(w fyne.Window) (screenTitle *widget.Label, screenDesc *widget.Label, screenContent *fyne.Container) {
+	welcomeData := data.GetStartScreenData()
 
 	screenTitle = widget.NewLabel(welcomeData.Title)
 	screenDesc = widget.NewLabel(welcomeData.Description)
@@ -24,7 +24,7 @@ func getWelcomeScreenContent(w fyne.Window) (screenTitle *widget.Label, screenDe
 }
 
 func CreateMainViewScreen(window fyne.Window) fyne.CanvasObject {
-	screenTitle, screenDesc, screenContent := getWelcomeScreenContent(window)
+	screenTitle, screenDesc, screenContent := getStartScreenContent(window)
 
 	setSelectedInfo := func(info data.TreeNodeContent) {
 		screenTitle.SetText(info.Title)
@@ -35,6 +35,7 @@ func CreateMainViewScreen(window fyne.Window) fyne.CanvasObject {
 	}
 
 	navTree := indextree.CreateIndexTree(setSelectedInfo)
+	navTree.OpenBranch(data.GetStartScreenName())
 	mainScreen := container.NewBorder(container.NewVBox(screenTitle, widget.NewSeparator(), screenDesc, widget.NewSeparator()), nil, nil, nil, screenContent)
 
 	splitScreens := container.NewHSplit(navTree, mainScreen)
