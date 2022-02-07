@@ -33,7 +33,7 @@ func GetTitle() string {
 }
 
 func GetDesc() string {
-	return "This page contains information about this computer's disk partitions."
+	return "This page contains information about this computer's disk partitions"
 }
 
 func transformInput(disk diskinfo.DiskPartitionInfo) DiskPartitionInfoGui {

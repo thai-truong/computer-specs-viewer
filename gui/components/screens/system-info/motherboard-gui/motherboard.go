@@ -17,7 +17,7 @@ func GetTitle() string {
 }
 
 func GetDesc() string {
-	return "This page contains information about this computer's motherboards."
+	return "This page contains information about this computer's motherboards"
 }
 
 func getMotherboardInfoStrings(mBoardGui MotherboardInformationGui) []string {

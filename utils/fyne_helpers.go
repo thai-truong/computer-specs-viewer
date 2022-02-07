@@ -40,3 +40,10 @@ func CreateAccordionItem(labelName string, order string, objs []fyne.CanvasObjec
 	title := GetStrWithOrder(labelName, order)
 	return widget.NewAccordionItem(title, container.NewVBox(objs...))
 }
+
+func CreateSection(labelName string, content fyne.CanvasObject) fyne.CanvasObject {
+	label := widget.NewLabel(labelName)
+	section := container.NewVBox(label, content)
+
+	return section
+}

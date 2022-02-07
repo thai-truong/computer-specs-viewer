@@ -1,7 +1,7 @@
 package main_blocks
 
 import (
-	index_tree "computer-specs-viewer/gui/components/index-tree"
+	indextree "computer-specs-viewer/gui/components/index-tree"
 	"computer-specs-viewer/gui/data"
 
 	"fyne.io/fyne/v2"
@@ -34,7 +34,7 @@ func CreateMainViewScreen(window fyne.Window) fyne.CanvasObject {
 		screenContent.Refresh()
 	}
 
-	navTree := index_tree.CreateIndexTree(setSelectedInfo)
+	navTree := indextree.CreateIndexTree(setSelectedInfo)
 	mainScreen := container.NewBorder(container.NewVBox(screenTitle, widget.NewSeparator(), screenDesc, widget.NewSeparator()), nil, nil, nil, screenContent)
 
 	splitScreens := container.NewHSplit(navTree, mainScreen)

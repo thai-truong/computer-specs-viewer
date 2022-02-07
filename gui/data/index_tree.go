@@ -25,10 +25,10 @@ var (
 	IndexTreeMapping = map[string][]string{
 		"":           {"welcome", "systemInfo", "settings"},
 		"systemInfo": {"cpu", "disk", "gpu", "host", "mem", "motherboard", "net"},
-		"settings":   {"themeMode"},
+		"settings":   {},
 	}
 
-	TitleToContentMapping = map[string]TreeNodeContent{
+	ContentMapping = map[string]TreeNodeContent{
 		"welcome":     {welcome.GetTitle(), welcome.GetDesc(), welcome.CreateScreen},
 		"systemInfo":  {systeminfo.GetTitle(), systeminfo.GetDesc(), systeminfo.CreateScreen},
 		"cpu":         {cpugui.GetTitle(), cpugui.GetDesc(), cpugui.CreateInfoScreen},
@@ -38,11 +38,10 @@ var (
 		"mem":         {memgui.GetTitle(), memgui.GetDesc(), memgui.CreateInfoScreen},
 		"motherboard": {motherboardgui.GetTitle(), motherboardgui.GetDesc(), motherboardgui.CreateInfoScreen},
 		"net":         {netgui.GetTitle(), netgui.GetDesc(), netgui.CreateInfoScreen},
-		"settings":    {"Settings", "", settings.SettingsScreen},
-		"themeMode":   {"Theme Mode", "", nil},
+		"settings":    {settings.GetTitle(), settings.GetDesc(), settings.CreateScreen},
 	}
 )
 
 func GetWelcomeScreenData() TreeNodeContent {
-	return TitleToContentMapping["welcome"]
+	return ContentMapping["welcome"]
 }

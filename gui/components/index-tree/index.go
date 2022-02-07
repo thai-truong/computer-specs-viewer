@@ -1,4 +1,4 @@
-package index_tree
+package indextree
 
 import (
 	"computer-specs-viewer/gui/data"
@@ -39,20 +39,19 @@ func createNewNode(isBranch bool) fyne.CanvasObject {
 }
 
 func updateNode(uid string, isBranch bool, nodeContent fyne.CanvasObject) {
-	t, ok := data.TitleToContentMapping[uid]
+	t, ok := data.ContentMapping[uid]
 
 	if !ok {
 		fyne.LogError("Invalid system information requested: "+uid, nil)
 		return
 	}
 
-	// TODO: Need better understanding of what nodeContent is and what this statement is doing
 	nodeContent.(*widget.Label).SetText(t.Title)
 }
 
 func setOnSelected(tree *widget.Tree, setSelectedInfo func(data.TreeNodeContent)) {
 	tree.OnSelected = func(uid string) {
-		info, found := data.TitleToContentMapping[uid]
+		info, found := data.ContentMapping[uid]
 
 		if found {
 			setSelectedInfo(info)

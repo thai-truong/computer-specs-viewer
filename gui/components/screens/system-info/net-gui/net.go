@@ -40,7 +40,7 @@ func GetTitle() string {
 }
 
 func GetDesc() string {
-	return "This page contains information about this computer's network interfaces."
+	return "This page contains information about this computer's network interfaces"
 }
 
 func transformNetworkIoInput(io netinfo.NetworkInterfaceIO) NetworkInterfaceIOGui {

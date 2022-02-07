@@ -17,7 +17,7 @@ func GetTitle() string {
 }
 
 func GetDesc() string {
-	return "This page contains information about this computer's CPU."
+	return "This page contains information about this computer's CPU"
 }
 
 func getCpuInfoStrings(cpuGui CpuInformationGui) []string {

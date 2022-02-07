@@ -10,11 +10,9 @@ func GetTitle() string {
 }
 
 func GetDesc() string {
-	return "This page contains links to information about different parts of your computer (at least the ones we support)"
+	return ""
 }
 
-func CreateScreen(_ fyne.Window) fyne.CanvasObject {
-	content := container.NewVBox()
-
-	return container.NewCenter(content)
+func CreateScreen(w fyne.Window) fyne.CanvasObject {
+	return container.NewCenter()
 }

@@ -28,7 +28,7 @@ func GetTitle() string {
 }
 
 func GetDesc() string {
-	return "This page contains information about this computer's current host."
+	return "This page contains information about this computer's current host"
 }
 
 func transformInput(host hostinfo.HostInformation) HostInformationGui {

@@ -36,7 +36,7 @@ func GetTitle() string {
 }
 
 func GetDesc() string {
-	return "This page contains information about this computer's memory information."
+	return "This page contains information about this computer's memory information"
 }
 
 func transformSwapDevsInput(swapDevs []meminfo.SwapDeviceInfo) []SwapDeviceInfoGui {
