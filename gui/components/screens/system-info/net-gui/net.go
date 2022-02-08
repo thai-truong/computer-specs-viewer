@@ -4,7 +4,6 @@ import (
 	netinfo "computer-specs-viewer/src/net_info"
 	"computer-specs-viewer/utils"
 	"fmt"
-	"reflect"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/widget"
@@ -74,47 +73,7 @@ func transformInput(nwInterface netinfo.NetworkInterfaceInformation) NetworkInte
 	}
 }
 
-func getNetworkBaseInfoStrings(basicInfoGui NetworkInterfaceBaseInformationGui) []string {
-	res := []string{}
-	diskValues := reflect.ValueOf(basicInfoGui)
-	diskType := diskValues.Type()
-
-	for i := 0; i < diskValues.NumField(); i++ {
-		infoFieldName := utils.SpaceOutFieldNames(diskType.Field(i).Name)
-		infoFieldValue := diskValues.Field(i).Interface()
-
-		infoStr := fmt.Sprintf("%s: %v\n", infoFieldName, infoFieldValue)
-		res = append(res, infoStr)
-	}
-
-	return res
-}
-
-func getNetworkBaseInfoLabel(basicInfoGui NetworkInterfaceBaseInformationGui) fyne.CanvasObject {
-	return utils.SliceToSingleFyneLabel(getNetworkBaseInfoStrings(basicInfoGui))
-}
-
-func getNetworkIoInfoStrings(ioGui NetworkInterfaceIOGui) []string {
-	res := []string{}
-	diskValues := reflect.ValueOf(ioGui)
-	diskType := diskValues.Type()
-
-	for i := 0; i < diskValues.NumField(); i++ {
-		infoFieldName := utils.SpaceOutFieldNames(diskType.Field(i).Name)
-		infoFieldValue := diskValues.Field(i).Interface()
-
-		infoStr := fmt.Sprintf("%s: %v\n", infoFieldName, infoFieldValue)
-		res = append(res, infoStr)
-	}
-
-	return res
-}
-
-func getNetworkIoInfoLabel(ioGui NetworkInterfaceIOGui) fyne.CanvasObject {
-	return utils.SliceToSingleFyneLabel(getNetworkIoInfoStrings(ioGui))
-}
-
-func CreateInfoScreen(_ fyne.Window) fyne.CanvasObject {
+func CreateScreen(_ fyne.Window) fyne.CanvasObject {
 	nwInterfaces := netinfo.GetNetworkInterfacesInfo()
 	nwInterfaceAccordion := widget.NewAccordion()
 
@@ -123,11 +82,11 @@ func CreateInfoScreen(_ fyne.Window) fyne.CanvasObject {
 
 		nwBaseInfoTitle := widget.NewLabel("Base Information:")
 		nwBaseInfoTitle.TextStyle.Bold = true
-		nwBaseInfoLabel := getNetworkBaseInfoLabel(nwInterfaceGui.BaseInfo)
+		nwBaseInfoLabel := utils.GetInfoGuiLabel(nwInterfaceGui.BaseInfo)
 
 		nwIoInfoTitle := widget.NewLabel("IO Information:")
 		nwIoInfoTitle.TextStyle.Bold = true
-		nwIoInfoLabel := getNetworkIoInfoLabel(nwInterfaceGui.IO)
+		nwIoInfoLabel := utils.GetInfoGuiLabel(nwInterfaceGui.IO)
 
 		nwInterfaceOrder := fmt.Sprint(nwInterfaceGui.BaseInfo.OrderNumber)
 		nwInterfaceLabels := []fyne.CanvasObject{nwBaseInfoTitle, nwBaseInfoLabel, nwIoInfoTitle, nwIoInfoLabel}

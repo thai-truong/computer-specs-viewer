@@ -29,13 +29,13 @@ var (
 
 	ContentMapping = map[string]TreeNodeContent{
 		"systemInfo":  {systeminfo.GetTitle(), systeminfo.GetDesc(), systeminfo.CreateScreen},
-		"cpu":         {cpugui.GetTitle(), cpugui.GetDesc(), cpugui.CreateInfoScreen},
-		"disk":        {diskgui.GetTitle(), diskgui.GetDesc(), diskgui.CreateInfoScreen},
-		"gpu":         {gpugui.GetTitle(), gpugui.GetDesc(), gpugui.CreateInfoScreen},
-		"host":        {hostgui.GetTitle(), hostgui.GetDesc(), hostgui.CreateInfoScreen},
-		"mem":         {memgui.GetTitle(), memgui.GetDesc(), memgui.CreateInfoScreen},
-		"motherboard": {motherboardgui.GetTitle(), motherboardgui.GetDesc(), motherboardgui.CreateInfoScreen},
-		"net":         {netgui.GetTitle(), netgui.GetDesc(), netgui.CreateInfoScreen},
+		"cpu":         {cpugui.GetTitle(), cpugui.GetDesc(), cpugui.CreateScreen},
+		"disk":        {diskgui.GetTitle(), diskgui.GetDesc(), diskgui.CreateScreen},
+		"gpu":         {gpugui.GetTitle(), gpugui.GetDesc(), gpugui.CreateScreen},
+		"host":        {hostgui.GetTitle(), hostgui.GetDesc(), hostgui.CreateScreen},
+		"mem":         {memgui.GetTitle(), memgui.GetDesc(), memgui.CreateScreen},
+		"motherboard": {motherboardgui.GetTitle(), motherboardgui.GetDesc(), motherboardgui.CreateScreen},
+		"net":         {netgui.GetTitle(), netgui.GetDesc(), netgui.CreateScreen},
 		"settings":    {settings.GetTitle(), settings.GetDesc(), settings.CreateScreen},
 	}
 )

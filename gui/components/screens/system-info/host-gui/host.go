@@ -4,7 +4,6 @@ import (
 	hostinfo "computer-specs-viewer/src/host_info"
 	"computer-specs-viewer/utils"
 	"fmt"
-	"reflect"
 	"time"
 
 	"fyne.io/fyne/v2"
@@ -45,32 +44,12 @@ func transformInput(host hostinfo.HostInformation) HostInformationGui {
 	}
 }
 
-func getHostInfoStrings(hostGui HostInformationGui) []string {
-	res := []string{}
-	cpuValues := reflect.ValueOf(hostGui)
-	cpuType := cpuValues.Type()
-
-	for i := 0; i < cpuValues.NumField(); i++ {
-		infoFieldName := utils.SpaceOutFieldNames(cpuType.Field(i).Name)
-		infoFieldValue := cpuValues.Field(i).Interface()
-
-		infoStr := fmt.Sprintf("%s: %v\n", infoFieldName, infoFieldValue)
-		res = append(res, infoStr)
-	}
-
-	return res
-}
-
-func getHostInfoLabel(hostGui HostInformationGui) fyne.CanvasObject {
-	return utils.SliceToSingleFyneLabel(getHostInfoStrings(hostGui))
-}
-
-func CreateInfoScreen(_ fyne.Window) fyne.CanvasObject {
+func CreateScreen(_ fyne.Window) fyne.CanvasObject {
 	host := hostinfo.GetHostInfo()
 	cpuAccordion := widget.NewAccordion()
 
 	hostGui := transformInput(host)
-	hostInfoLabel := getHostInfoLabel(hostGui)
+	hostInfoLabel := utils.GetInfoGuiLabel(hostGui)
 
 	accordionItem := utils.CreateAccordionItem("Host", "", []fyne.CanvasObject{hostInfoLabel})
 	cpuAccordion.Append(accordionItem)

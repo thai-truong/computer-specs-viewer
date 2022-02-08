@@ -4,8 +4,6 @@ import (
 	custom_types "computer-specs-viewer/gui/custom-types"
 	diskinfo "computer-specs-viewer/src/disk_info"
 	"computer-specs-viewer/utils"
-	"fmt"
-	"reflect"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/widget"
@@ -55,27 +53,7 @@ func transformInput(disk diskinfo.DiskPartitionInfo) DiskPartitionInfoGui {
 	}
 }
 
-func getDiskInfoStrings(diskGui DiskPartitionInfoGui) []string {
-	res := []string{}
-	diskValues := reflect.ValueOf(diskGui)
-	diskType := diskValues.Type()
-
-	for i := 0; i < diskValues.NumField(); i++ {
-		infoFieldName := utils.SpaceOutFieldNames(diskType.Field(i).Name)
-		infoFieldValue := diskValues.Field(i).Interface()
-
-		infoStr := fmt.Sprintf("%s: %v\n", infoFieldName, infoFieldValue)
-		res = append(res, infoStr)
-	}
-
-	return res
-}
-
-func getDiskInfoLabel(diskGui DiskPartitionInfoGui) fyne.CanvasObject {
-	return utils.SliceToSingleFyneLabel(getDiskInfoStrings(diskGui))
-}
-
-func CreateInfoScreen(_ fyne.Window) fyne.CanvasObject {
+func CreateScreen(_ fyne.Window) fyne.CanvasObject {
 	diskSlice := diskinfo.GetDiskPartitionsInfo(true)
 	diskAccordion := widget.NewAccordion()
 
@@ -83,7 +61,7 @@ func CreateInfoScreen(_ fyne.Window) fyne.CanvasObject {
 		diskGui := transformInput(disk)
 		diskOrder := diskGui.Name[:len(diskGui.Name)-1]
 
-		diskInfoLabel := getDiskInfoLabel(diskGui)
+		diskInfoLabel := utils.GetInfoGuiLabel(diskGui)
 		accordionItem := utils.CreateAccordionItem("Disk", diskOrder, []fyne.CanvasObject{diskInfoLabel})
 		diskAccordion.Append(accordionItem)
 	}

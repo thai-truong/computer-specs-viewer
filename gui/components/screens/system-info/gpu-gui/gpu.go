@@ -5,7 +5,6 @@ import (
 	gpuinfo "computer-specs-viewer/src/gpu_info"
 	"computer-specs-viewer/utils"
 	"fmt"
-	"reflect"
 	"time"
 
 	"fyne.io/fyne/v2"
@@ -60,27 +59,7 @@ func transformInput(gpu gpuinfo.GpuInformation) GpuInformationGui {
 	}
 }
 
-func getGpuInfoStrings(gpuGui GpuInformationGui) []string {
-	res := []string{}
-	diskValues := reflect.ValueOf(gpuGui)
-	diskType := diskValues.Type()
-
-	for i := 0; i < diskValues.NumField(); i++ {
-		infoFieldName := utils.SpaceOutFieldNames(diskType.Field(i).Name)
-		infoFieldValue := diskValues.Field(i).Interface()
-
-		infoStr := fmt.Sprintf("%s: %v\n", infoFieldName, infoFieldValue)
-		res = append(res, infoStr)
-	}
-
-	return res
-}
-
-func getGpuInfoLabel(gpuGui GpuInformationGui) fyne.CanvasObject {
-	return utils.SliceToSingleFyneLabel(getGpuInfoStrings(gpuGui))
-}
-
-func CreateInfoScreen(_ fyne.Window) fyne.CanvasObject {
+func CreateScreen(_ fyne.Window) fyne.CanvasObject {
 	gpuSlice := gpuinfo.GetGPUsInformation()
 	gpuAccordion := widget.NewAccordion()
 
@@ -88,7 +67,7 @@ func CreateInfoScreen(_ fyne.Window) fyne.CanvasObject {
 		gpuGui := transformInput(gpu)
 		gpuOrder := fmt.Sprint(i + 1)
 
-		gpuInfoLabel := getGpuInfoLabel(gpuGui)
+		gpuInfoLabel := utils.GetInfoGuiLabel(gpuGui)
 		accordionItem := utils.CreateAccordionItem("GPU", gpuOrder, []fyne.CanvasObject{gpuInfoLabel})
 		gpuAccordion.Append(accordionItem)
 	}

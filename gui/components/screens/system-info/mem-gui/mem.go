@@ -5,7 +5,6 @@ import (
 	meminfo "computer-specs-viewer/src/mem_info"
 	"computer-specs-viewer/utils"
 	"fmt"
-	"reflect"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/widget"
@@ -72,50 +71,15 @@ func transformInput(mem meminfo.AllMemInfo) AllMemInfoGui {
 	}
 }
 
-func getMemInfoStrings(memGui MemInformationGui) []string {
-	res := []string{}
-	diskValues := reflect.ValueOf(memGui)
-	diskType := diskValues.Type()
-
-	for i := 0; i < diskValues.NumField(); i++ {
-		infoFieldName := utils.SpaceOutFieldNames(diskType.Field(i).Name)
-		infoFieldValue := diskValues.Field(i).Interface()
-
-		infoStr := fmt.Sprintf("%s: %v\n", infoFieldName, infoFieldValue)
-		res = append(res, infoStr)
-	}
-
-	return res
-}
-
-func getMemInfoLabel(memGui MemInformationGui) fyne.CanvasObject {
-	return utils.SliceToSingleFyneLabel(getMemInfoStrings(memGui))
-}
-
-func getSwapDevInfoStrings(sDevGui SwapDeviceInfoGui) []string {
-	res := []string{}
-	diskValues := reflect.ValueOf(sDevGui)
-	diskType := diskValues.Type()
-
-	for i := 0; i < diskValues.NumField(); i++ {
-		infoFieldName := utils.SpaceOutFieldNames(diskType.Field(i).Name)
-		infoFieldValue := diskValues.Field(i).Interface()
-
-		infoStr := fmt.Sprintf("%s: %v\n", infoFieldName, infoFieldValue)
-		res = append(res, infoStr)
-	}
-
-	return res
-}
-
 func getSwapDevInfoLabel(sDevsGui []SwapDeviceInfoGui) fyne.CanvasObject {
 	allSwapDevs := []string{}
 
 	for i, sDevGui := range sDevsGui {
 		sDevOrder := fmt.Sprint(i + 1)
-		currSwapDevStrs := []string{utils.GetStrWithOrder("Swap Device", sDevOrder) + ":"}
 
-		currSwapDevStrs = append(currSwapDevStrs, getSwapDevInfoStrings(sDevGui)...)
+		currSwapDevStrs := []string{fmt.Sprintf("%s %s:\n", "Swap Device", sDevOrder)}
+
+		currSwapDevStrs = append(currSwapDevStrs, utils.GetInfoGuiStrings(sDevGui)...)
 		allSwapDevs = append(allSwapDevs, currSwapDevStrs...)
 		allSwapDevs = append(allSwapDevs, "\n")
 	}
@@ -123,13 +87,13 @@ func getSwapDevInfoLabel(sDevsGui []SwapDeviceInfoGui) fyne.CanvasObject {
 	return utils.SliceToSingleFyneLabel(allSwapDevs)
 }
 
-func CreateInfoScreen(_ fyne.Window) fyne.CanvasObject {
+func CreateScreen(_ fyne.Window) fyne.CanvasObject {
 	memInfo := meminfo.GetAllMemInfo()
 	memAccordion := widget.NewAccordion()
 
 	memInfoGui := transformInput(memInfo)
-	vMemLabel := getMemInfoLabel(memInfoGui.VirtualMem)
-	sMemLabel := getMemInfoLabel(memInfoGui.SwapMem)
+	vMemLabel := utils.GetInfoGuiLabel(memInfoGui.VirtualMem)
+	sMemLabel := utils.GetInfoGuiLabel(memInfoGui.SwapMem)
 	swapDevsLabel := getSwapDevInfoLabel(memInfoGui.SwapDevices)
 
 	vMemAccordionItem := utils.CreateAccordionItem("Virtual Memory", "", []fyne.CanvasObject{vMemLabel})
